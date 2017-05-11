@@ -1,0 +1,84 @@
+ABOUT
+This program is intended to work as a replacement Linux shell. 
+It is supposed to take input from the user and process it, 
+running other programs, changing variables, functioning as a 
+shell.
+
+This program will parse input into tokens, read the tokens for 
+correctness, and, if correct, execute the intended commands.
+
+Available commands are: set, dir, prompt, procs, do, back, 
+tovar, and done.
+
+set variable value : will look for and create if necessary a 
+variable "variable" with the definition "value."
+
+dir directoryName : will attempt to change the current working 
+directory to "directoryName"
+
+prompt newPrompt : will change active prompt to "newPrompt"
+
+procs : will list processes running in the background as result 
+of back command.
+
+do cmd param* : will fork/exec current process and attempt to 
+run file "cmd" with 0 or more parameters "param*"
+
+back cmd param* : same as do, but will run process in background.
+
+tovar variable cmd param* : same as do, but will save output 
+of forked process to variable "variable."
+
+done : exits the program.
+
+
+SPECIAL VARIABLES
+set ShowTokens (0 or 1) : sets flag to print tokens on/off
+set ShowVars (0 or 1) : sets flag to print current variables
+
+CWD : will update with call to dir to current working directory
+prompt : will update with call to prompt with current prompt
+
+
+COMPILING
+
+To compile type
+% gcc nsh.c 
+or
+% make
+
+
+RUNNING
+
+To run, type
+% ./a.out
+or if you used make
+% ./nsh
+
+
+LIMITATIONS/BUGS
+
+Following hours of debugging segmentation faults, invalid 
+pointer reads, free() errors and seemingly hundreds more 
+problems, the program has reached an "acceptable" level of 
+functionality. It's not perfect, clearly, but it will have
+to do for now. Call it Beta.
+
+The program uses perror() where the programmer thought it 
+might fail, but there are probably several areas uncovered.
+
+Programs will fork/exec if the PATH is set to "/bin", but
+not "/usr/bin" ... probably from using the wrong exec call.
+
+Also, the tovar command only sets up the name of the variable 
+in the variable list: it doesn't actually set the value of 
+the output. The programmer tried using pipes but kept getting 
+gibberish in the value, and decided to cut his losses.
+
+There was a pesky bug (possibly from malloc) where data 
+wasn't actually deleted, ending up in new buffers from totally
+fresh function calls. ... The programmer thinks it has been
+vanquished by initiallizing all malloc'd memory to '\0' 
+immidiately after malloc'ing .... but he can't be sure. 
+
+Be watchful of these errors and more.

@@ -1,0 +1,37 @@
+combineFiles.c compiles by typing:
+
+% gcc -Wall combineFiles.c -o combineFiles
+
+or simply by using the makefile provided by
+
+% make combineFiles
+
+
+The program can then be executed by entering
+
+% ./combineFiles [SPEC FILE]* ...
+
+Where SPEC is a specification "-a, -sN, -eN" with N being an integer number of bytes to read and FILE is a file somewhere in the directory, or read from stdin with the special file character '-'.
+
+
+The [SPEC FILE]* argument pair can be repeated any number of times.
+
+The purpose of combineFiles is to take binary input from either a file or stdin or both and output to stdout all entered data. The SPEC -a means the entire file, -sN means the start of the file to N bytes, and -eN means starting from N bytes to the end of the file.
+
+Invalid specs or filenames will generate errors, but the program will continue to run and generate output for valid [SPEC FILE]* combinations.
+
+
+KNOWN BUGS
+
+The use of stdin by invoking a '-' file type will only generate the entire input to stdout (that is to say, if the SPEC if valid it still treats it as '-a').
+
+To end stdin input, CONTROL-D signals an EOF (End of File) to the program, however: if CONTROL-D is used during the middle of a line it must be typed three times for the program to accept the EOF. If CONTROL-D is used on a newline (after pressing ENTER), one time is sufficient to end stdin input.
+
+If an invalid SPEC is given with an invalid FILE, only the invalid SPEC is reported.
+
+
+TESTING
+
+Testing was exhaustive. Multiple combinations of good and bad SPEC FILE pairs were used. On bad pairs, the program ignores the invalid entry and carries on to the next one. If no arguments are presented the program will not crash, it simply computes nothing and returns. Testing the stdin input with '-' was the hardest as I simply reverted to copying/pasting large amounts of text into the command prompt to make sure there were no buffer overflows. A file in a native linux directory can be invoked by using backslashes, ie /etc/hosts, and a file in a directory relative to the one combineFiles.c resides in can be invoked with the addition of a period, ie ./MYDIR/myfile.
+
+
